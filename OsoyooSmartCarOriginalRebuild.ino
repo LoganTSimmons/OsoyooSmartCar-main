@@ -204,7 +204,7 @@ void auto_avoidance()
   { //Watch if something is around every LPT loops while moving forward 
     stop_Stop();
     String obstacle_sign=watchsurrounding(); // 5 digits of obstacle_sign binary value means the 5 direction obstacle status
-    Serial.print("begin str=");
+    Serial.print("Obstacle Sign");
     Serial.println(obstacle_sign);
 
     if(obstacle_sign=="10000")
@@ -267,6 +267,7 @@ void auto_avoidance()
   
   else 
   {
+    Serial.println("Going forward");
     set_Motorspeed(SPEED,SPEED);
     go_Advance();  // if nothing is wrong go forward using go() function above.
     delay(backtime);
@@ -278,16 +279,17 @@ void auto_avoidance()
 // The robot will just stop if it is completely sure there's an obstacle ahead (must test 25 times) (needed to ignore ultrasonic sensor's false signals)  
   if (distance<distancelimit)
   { 
-    Serial.println("final go back");
+    Serial.println("Obstacle?");
     ++thereis;
   }
   if (distance>distancelimit)
   {
+    Serial.println("No obstacle");
     thereis=0;//Count is restarted
   } 
   if (thereis > 25)
   {
-    Serial.println("final stop");
+    Serial.println("Obstacle confirmed");
     stop_Stop(); // Since something is ahead, stop moving.
     thereis=0;
   }
