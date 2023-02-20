@@ -364,7 +364,23 @@ void collisionAvoidance()
               { 
                 Serial.println("Turn slight right");
               }
-            turnRight(23);
+            turnRight(15);
+          }
+        else if(obstacle_sign=="11000" ||  obstacle_sign=="01000" ) // turn right
+          {
+            if(serialDebug==1)
+              { 
+                Serial.println("Turning Right");
+              }
+            turnRight(30);
+          }   
+        if(obstacle_sign=="11100" || obstacle_sign=="10100"  || obstacle_sign=="01100") //turn hard right
+          {
+            if(serialDebug==1)
+              { 
+                Serial.println("Turn slight right");
+              }
+            turnRight(60);
           }
         else if(obstacle_sign=="00001") // turn slight left
           {
@@ -372,25 +388,25 @@ void collisionAvoidance()
               { 
                 Serial.println("Turn slight left");
               }
-            turnLeft(23);
+            turnLeft(15);
           }
-        else if(obstacle_sign=="11000" ||obstacle_sign=="11100" ||  obstacle_sign=="01000"   || obstacle_sign=="10100"  || obstacle_sign=="01100" ||obstacle_sign=="00100") // turn right
-          {
-            if(serialDebug==1)
-              { 
-                Serial.println("Turning Right");
-              }
-            turnRight(45);
-          } 
-        else if(obstacle_sign=="00010" || obstacle_sign=="00111" || obstacle_sign=="00011"  || obstacle_sign=="00101" || obstacle_sign=="00110" || obstacle_sign=="01010") // turn left
+        else if(obstacle_sign=="00010" ||  obstacle_sign=="00011"  ) // turn left
         {
           if(serialDebug==1)
               { 
                 Serial.println("Turning Left");
               }
-            turnLeft(45);
+            turnLeft(30);
         }
-        else if(obstacle_sign=="01111" ||  obstacle_sign=="10111" || obstacle_sign=="11110" ||  obstacle_sign=="11101" || obstacle_sign=="11011" || obstacle_sign=="01110" || obstacle_sign=="11111") // turn around
+        if(obstacle_sign=="00111" || obstacle_sign=="00101" || obstacle_sign=="00110") //turn hard left
+          {
+            if(serialDebug==1)
+              { 
+                Serial.println("Turn slight right");
+              }
+            turnRight(60);
+          }
+        else if(obstacle_sign=="01111" ||  obstacle_sign=="10111" || obstacle_sign=="11110" ||  obstacle_sign=="11101" || obstacle_sign=="11011" || obstacle_sign=="01110" || obstacle_sign=="11111" ||  obstacle_sign=="01010" || obstacle_sign=="00100") // turn around
           {
             if(serialDebug==1)
                 { 

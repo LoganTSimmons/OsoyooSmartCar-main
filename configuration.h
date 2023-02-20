@@ -22,13 +22,11 @@ int serialDebug=1; //enter 1 for on, 0 for off
 #define BACK_SPEED2  90     //back speed
 #define distancelimit 30 //distance limit for obstacles in front
 #define sidedistancelimit 30 //minimum distance in cm to obstacles at both sides (the car will allow a shorter distance sideways)
-//#define turntime 250 //Time the robot spends turning (miliseconds)
 #define backtime 300 //Time the robot spends turning (miliseconds)
 #define servoTurnPause 1000
 
 int turnRatio=10;
 int degree;
-//int turntime = degree*10; //Time the robot spends turning (miliseconds)
 int obstacle_status = B100000;
 int leftscanval, centerscanval, rightscanval, ldiagonalscanval, rdiagonalscanval, distance;
 int numcycles = 0;
@@ -45,5 +43,5 @@ int pauseBetweenNotes = 500;
 int center = 90;
 int halfLeft = 110;
 int fullLeft = 130;
-int halfRight = 70;
-int fullRight = 50;
+int halfRight = 60;
+int fullRight = 40;
