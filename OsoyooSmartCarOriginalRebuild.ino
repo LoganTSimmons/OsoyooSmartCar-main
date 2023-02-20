@@ -8,39 +8,38 @@
 #include "functions.h"
 
 void setup() 
-{
-  Serial.begin(9600);
-  
-  /*setup L298N pin mode*/
-  pinMode(RightDirectPin1, OUTPUT); 
-  pinMode(RightDirectPin2, OUTPUT); 
-  pinMode(speedPinL, OUTPUT);  
-  pinMode(LeftDirectPin1, OUTPUT);
-  pinMode(LeftDirectPin2, OUTPUT); 
-  pinMode(speedPinR, OUTPUT); 
-  stop();
+  {
+    Serial.begin(9600);
+    
+    /*setup L298N pin mode*/
+    pinMode(RightDirectPin1, OUTPUT); 
+    pinMode(RightDirectPin2, OUTPUT); 
+    pinMode(speedPinL, OUTPUT);  
+    pinMode(LeftDirectPin1, OUTPUT);
+    pinMode(LeftDirectPin2, OUTPUT); 
+    pinMode(speedPinR, OUTPUT); 
+    stop();
 
-  /*init HC-SR04*/
-  pinMode(Trig_PIN, OUTPUT); 
-  pinMode(Echo_PIN,INPUT);
-  digitalWrite(Trig_PIN,LOW); 
+    /*init HC-SR04*/
+    pinMode(Trig_PIN, OUTPUT); 
+    pinMode(Echo_PIN,INPUT);
+    digitalWrite(Trig_PIN,LOW); 
 
-  /*init buzzer*/
-  pinMode(peizoPin, OUTPUT);
-  digitalWrite(peizoPin, HIGH);  
-  buzz_OFF(); 
+    /*init buzzer*/
+    pinMode(peizoPin, OUTPUT);
+    digitalWrite(peizoPin, HIGH);  
+    buzz_OFF(); 
 
-  
-  /*init servo*/
-  head.attach(SERVO_PIN); 
-  head.write(90);
-  pause(2000);
+    /*init servo*/
+    head.attach(SERVO_PIN); 
+    head.write(90);
+    pause(2000);
 
-  playGreatingMelody(); 
-  testDance();
-}
+    playGreatingMelody(); 
+    testDance();
+  }
 
 void loop() 
-{
-  collisionAvoidance();
-}
+  {
+    collisionAvoidance();
+  }
