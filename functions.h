@@ -3,7 +3,6 @@ Servo head;
 //this pause function takes in a an integer and will pause for that many milliseconds
 void pause(int pauseTime)
  {
-  
   timeElapsed = millis();
   while (millis() < timeElapsed + pauseTime){}
   if(serialDebug==0)
@@ -276,31 +275,32 @@ String watchsurrounding()
     *   for example B101000 last 5 digits is 01000, which stands for Left front has obstacle, B100111 means front, right front and right ha
     */
     int obstacle_status =B100000;
-    
+
     centerscanval = watch();
     if(centerscanval<distancelimit)
     {
       stop();
-      alarm();
+      playErrorMelody();
       obstacle_status  =obstacle_status | B100;
     }
+
     head.write(120);
     pause(100);
     ldiagonalscanval = watch();
     if(ldiagonalscanval<distancelimit)
     {
       stop();
-      alarm();
+      playErrorMelody();
       obstacle_status  =obstacle_status | B1000;
     }
     
     head.write(170); //Didn't use 180 degrees because my servo is not able to take this angle
-    pause(300);
+    pause(100);
     leftscanval = watch();
     if(leftscanval<sidedistancelimit)
     {
       stop();
-      alarm();
+      playErrorMelody();
       obstacle_status  =obstacle_status | B10000;
     }
 
@@ -310,7 +310,7 @@ String watchsurrounding()
     if(centerscanval<distancelimit)
     {
       stop();
-      alarm();
+      playErrorMelody();
       obstacle_status  =obstacle_status | B100;
     }
     
@@ -320,7 +320,7 @@ String watchsurrounding()
     if(rdiagonalscanval<distancelimit)
     {
       stop();
-      alarm();
+      playErrorMelody();
       obstacle_status  =obstacle_status | B10;
     }
     
@@ -330,12 +330,12 @@ String watchsurrounding()
     if(rightscanval<sidedistancelimit)
     {
       stop();
-      alarm();
+      playErrorMelody();
       obstacle_status  =obstacle_status | 1;
     }
   
     head.write(90); //Finish looking around (look forward again)
-    pause(300);
+    pause(100);
   
     String obstacle_str= String(obstacle_status,BIN);
     obstacle_str= obstacle_str.substring(1,6);
