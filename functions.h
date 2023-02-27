@@ -276,19 +276,17 @@ String watchsurrounding()
     *   for example B101000 last 5 digits is 01000, which stands for Left front has obstacle, B100111 means front, right front and right ha
     */
     int obstacle_status =B100000;
-    centerscanval = watch();
     
+    centerscanval = watch();
     if(centerscanval<distancelimit)
     {
       stop();
       alarm();
       obstacle_status  =obstacle_status | B100;
     }
-    
     head.write(120);
     pause(100);
     ldiagonalscanval = watch();
-    
     if(ldiagonalscanval<distancelimit)
     {
       stop();
@@ -299,7 +297,6 @@ String watchsurrounding()
     head.write(170); //Didn't use 180 degrees because my servo is not able to take this angle
     pause(300);
     leftscanval = watch();
-    
     if(leftscanval<sidedistancelimit)
     {
       stop();
@@ -307,10 +304,9 @@ String watchsurrounding()
       obstacle_status  =obstacle_status | B10000;
     }
 
-    head.write(90); //use 90 degrees if you are moving your servo through the whole 180 degrees
+    head.write(90); 
     pause(100);
     centerscanval = watch();
-    
     if(centerscanval<distancelimit)
     {
       stop();
@@ -321,7 +317,6 @@ String watchsurrounding()
     head.write(40);
     pause(100);
     rdiagonalscanval = watch();
-    
     if(rdiagonalscanval<distancelimit)
     {
       stop();
@@ -332,7 +327,6 @@ String watchsurrounding()
     head.write(0);
     pause(100);
     rightscanval = watch();
-    
     if(rightscanval<sidedistancelimit)
     {
       stop();
