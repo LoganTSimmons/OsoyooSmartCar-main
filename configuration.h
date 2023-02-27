@@ -14,8 +14,8 @@ int serialDebug=1; //enter 1 for on, 0 for off
 #define SERVO_PIN 9 //servo connect to D9
 #define Echo_PIN 11 // Ultrasonic Echo pin connect to D11
 #define Trig_PIN 12 // Ultrasonic Trig pin connect to D12
-#define floorEcho_PIN 10 // Ultrasonic floor Echo pin connect to D10
-#define floorTrig_PIN 13 // Ultrasonic floor Trig pin connect to D13
+#define floorEcho_PIN 13 // Ultrasonic floor Echo pin connect to D10
+#define floorTrig_PIN 10 // Ultrasonic floor Trig pin connect to D13
 #define peizoPin 3 
 #define FAST_SPEED 250 // fast motor speed
 #define SPEED 90 // low motor speed, this is the lowest speed setting we can use, lower than this and the car wont start moving on its own
@@ -23,14 +23,15 @@ int serialDebug=1; //enter 1 for on, 0 for off
 #define BACK_SPEED1 255 // fast back speed
 #define BACK_SPEED2 100  // slow back speed
 #define distancelimit 30 // distance limit for obstacles in front
-#define sidedistancelimit 30 //minimum distance in cm to obstacles at both sides (the car will allow a shorter distance sideways)
+#define sidedistancelimit 15 //minimum distance in cm to obstacles at both sides (the car will allow a shorter distance sideways)
 #define backtime 300 // Time the robot spends turning (miliseconds)
 #define servoTurnPause 100 // time spent pausing before servo turns
+#define turnTime 800 // gives the car time to turn after detecting an obstacle
 
 int turnRatio=10;
 int degree;
 int obstacle_status = B100000;
-int leftscanval, centerscanval, rightscanval, ldiagonalscanval, rdiagonalscanval, distance;
+int leftscanval, centerscanval, rightscanval, ldiagonalscanval, rdiagonalscanval, distance, floorDistance;
 int numcycles = 0;
 int thereis=0;
 unsigned long timeElapsed = 0;

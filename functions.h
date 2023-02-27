@@ -156,6 +156,21 @@ int watch()
     Serial.println((int)echo_distance);
     return round(echo_distance);
   }
+int floorWatch()
+  {
+    long floorEcho_distance;
+    digitalWrite(floorTrig_PIN,LOW);
+    microPause(5);                                                                              
+    digitalWrite(floorTrig_PIN,HIGH);
+    microPause(15);
+    digitalWrite(floorTrig_PIN,LOW);
+    floorEcho_distance=pulseIn(floorEcho_PIN,HIGH);
+    floorEcho_distance=floorEcho_distance*0.01657; //how far away is the object in cm
+    Serial.print("Floor Echo Distance: ");
+    Serial.println((int)floorEcho_distance);
+    return round(floorEcho_distance);
+  }
+
 void lookCenter()
   {
     head.write(center);//90 
@@ -344,6 +359,7 @@ String watchsurrounding()
 
 void collisionAvoidance()
   {
+/*    
     ++numcycles;
     if(numcycles>=LPT)
       { //Watch if something is around every LPT loops while moving forward 
@@ -412,7 +428,89 @@ void collisionAvoidance()
         else Serial.println("no handle");
         numcycles=0; //Restart count of cycles
       } 
-    else 
+*/
+    //floorWatch();
+    floorDistance=floorWatch();
+    String obstacle_sign=watchsurrounding(); // 5 digits of obstacle_sign binary value means the 5 direction obstacle status
+    Serial.print("Obstacle Sign: ");
+    Serial.println(obstacle_sign);
+    Serial.print("Floor Distance: ");
+    Serial.println(floorDistance);
+
+    if(floorDistance>3) //drop detected, back up and turn around
+    {
+      stop();
+      playErrorMelody();
+      goBack();
+      turnRight(90);
+      pause(turnTime);
+    }
+    else if(obstacle_sign=="10000") //turn slight right
+      {
+        if(serialDebug==1)
+          { 
+            Serial.println("Turn slight right");
+          }
+        turnRight(15);
+        pause(turnTime); 
+      }
+    else if(obstacle_sign=="11000" ||  obstacle_sign=="01000" ) // turn right
+      {
+        if(serialDebug==1)
+          { 
+            Serial.println("Turning Right");
+          }
+        turnRight(30);
+        pause(turnTime); 
+      }   
+    else if(obstacle_sign=="11100" || obstacle_sign=="10100"  || obstacle_sign=="01100") //turn hard right
+      {
+        if(serialDebug==1)
+          { 
+            Serial.println("Turn slight right");
+          }
+        turnRight(60);
+        pause(turnTime); 
+      }
+    else if(obstacle_sign=="00001") // turn slight left
+      {
+        if(serialDebug==1)
+          { 
+            Serial.println("Turn slight left");
+          }
+        turnLeft(15);
+        pause(turnTime); 
+      }
+    else if(obstacle_sign=="00010" ||  obstacle_sign=="00011"  ) // turn left
+    {
+      if(serialDebug==1)
+          { 
+            Serial.println("Turning Left");
+          }
+        turnLeft(30);
+        pause(turnTime); 
+    }
+    else if(obstacle_sign=="00111" || obstacle_sign=="00101" || obstacle_sign=="00110") //turn hard left
+      {
+        if(serialDebug==1)
+          { 
+            Serial.println("Turn slight right");
+          }
+        turnRight(60);
+        pause(turnTime); 
+      }
+    else if(obstacle_sign=="01111" ||  obstacle_sign=="10111" || obstacle_sign=="11110" ||  obstacle_sign=="11101" || obstacle_sign=="11011" || obstacle_sign=="01110" || obstacle_sign=="11111" ||  obstacle_sign=="01010" || obstacle_sign=="00100") // turn around
+      {
+        if(serialDebug==1)
+            { 
+              Serial.println("Turning Back");
+            }
+        turnRight(90);
+        pause(turnTime); 
+      }   
+    
+    //else Serial.println("no handle");  
+    else // no obstacle, move forward
       {
         if(serialDebug==1)
           { 
@@ -420,6 +518,7 @@ void collisionAvoidance()
           }
         goForward();
       }
+/*      
     distance = watch(); // use the watch() function to see if anything is ahead (when the robot is just moving forward and not looking around it will test the distance in front)
     // The robot will just stop if it is completely sure there's an obstacle ahead (must test 25 times) (needed to ignore ultrasonic sensor's false signals)  
     if (distance<distancelimit)
@@ -438,6 +537,7 @@ void collisionAvoidance()
         stop(); // Since something is ahead, stop moving.
         thereis=0;
       }
+*/
   }
 
 void testDance()

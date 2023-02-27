@@ -1,7 +1,3 @@
-/* 
- * Tutorial URL http://osoyoo.com/2018/12/19/osoyoo-robot-car-kit-lesson-4-obstacle-avoidance-robot-car/
- * CopyRight www.osoyoo.com
- */
 
 #include "Servo.h"
 #include "configuration.h"
@@ -20,10 +16,15 @@ void setup()
     pinMode(speedPinR, OUTPUT); 
     stop();
 
-    /*init HC-SR04*/
+    /*init top HC-SR04*/
     pinMode(Trig_PIN, OUTPUT); 
     pinMode(Echo_PIN,INPUT);
     digitalWrite(Trig_PIN,LOW); 
+
+    /*init floor HC-SR04*/
+    pinMode(floorTrig_PIN, OUTPUT); 
+    pinMode(floorEcho_PIN,INPUT);
+    digitalWrite(floorTrig_PIN,LOW); 
 
     /*init buzzer*/
     pinMode(peizoPin, OUTPUT);
@@ -35,8 +36,8 @@ void setup()
     head.write(90);
     pause(2000);
 
-    playGreatingMelody(); 
-    testDance();
+    playGreatingMelody();
+
   }
 
 void loop() 
