@@ -44,7 +44,7 @@ void set_Motorspeed(int speed_L,int speed_R)
   }
 void stop() 
   {
-    digitalWrite(RightDirectPin1, LOW);
+    digitalWrite(RightDirectPin1,LOW);
     digitalWrite(RightDirectPin2,LOW);
     digitalWrite(LeftDirectPin1,LOW);
     digitalWrite(LeftDirectPin2,LOW);
@@ -80,14 +80,10 @@ void turnRight(int degree)  //Turn right
     pause(turntime);
     stop();
   }
-
-//update this so it takes in a number that reflects distance
-//code should do the math for the user and will determine the 
-//amount of time to pause and let the wheels spin to reach the desired disdtance
 void goBack()  //Reverse
   {
-    set_Motorspeed(BACK_SPEED1,BACK_SPEED1);
-    digitalWrite(RightDirectPin1, LOW);
+    set_Motorspeed(BACK_SPEED2,BACK_SPEED2);
+    digitalWrite(RightDirectPin1,LOW);
     digitalWrite(RightDirectPin2,HIGH);
     digitalWrite(LeftDirectPin1,LOW);
     digitalWrite(LeftDirectPin2,HIGH);
@@ -121,25 +117,10 @@ void playGreatingMelody()
         noTone(peizoPin);
       }
   }
-void buzz_ON()   
-{
-  for(int i=0;i<100;i++)
+void buzz_OFF()  //close buzzer
   {
-   digitalWrite(peizoPin,LOW);
-   pause(2);//wait for 1ms
-   digitalWrite(peizoPin,HIGH);
-   pause(2);//wait for 1ms
+    digitalWrite(peizoPin, HIGH);
   }
-}
-void buzz_OFF()  
-{
-  digitalWrite(peizoPin, HIGH); 
-}
-void alarm()
-{
-   buzz_ON();
-   buzz_OFF();
-}
 
 /*detection of ultrasonic distance*/
 int watch()
@@ -152,143 +133,34 @@ int watch()
     digitalWrite(Trig_PIN,LOW);
     echo_distance=pulseIn(Echo_PIN,HIGH);
     echo_distance=echo_distance*0.01657; //how far away is the object in cm
-    Serial.print("Echo Distance: ");
-    Serial.println((int)echo_distance);
+    //Serial.print("Echo Distance: ");
+    //Serial.println((int)echo_distance);
     return round(echo_distance);
   }
 int floorWatch()
   {
-    long floorEcho_distance;
+    long floorEcho_distance; 
     digitalWrite(floorTrig_PIN,LOW);
-    microPause(5);                                                                              
+    microPause(2);                                                                          
     digitalWrite(floorTrig_PIN,HIGH);
-    microPause(15);
+    microPause(2);
     digitalWrite(floorTrig_PIN,LOW);
     floorEcho_distance=pulseIn(floorEcho_PIN,HIGH);
     floorEcho_distance=floorEcho_distance*0.01657; //how far away is the object in cm
-    Serial.print("Floor Echo Distance: ");
-    Serial.println((int)floorEcho_distance);
+    //Serial.print("Floor Echo Distance: ");
+    //Serial.println((int)floorEcho_distance);
     return round(floorEcho_distance);
-  }
-
-void lookCenter()
-  {
-    head.write(center);//90 
-    pause(servoTurnPause);//this gives the servo time to turn before trying to do anything else, can also slow the servo down so its not so spastic
-    centerscanval = watch();
-    centerscanval = watch();//we watch twice to account for false positves/negatives
-    if(centerscanval<distancelimit)
-    {
-      stop();
-      playErrorMelody();
-      obstacle_status  = obstacle_status | B100;
-    }
-    if(serialDebug==1)
-    {
-      Serial.print("Center Scan distance: ");
-      Serial.println(centerscanval);
-      Serial.println("");
-      Serial.print("Obstacle status: ");
-      Serial.println(obstacle_status);
-      Serial.println("");
-    }
-  }
-void lookFullLeft()
-  {
-    head.write(fullLeft);//130
-    pause(servoTurnPause);
-    leftscanval = watch();
-    leftscanval = watch();
-    if(leftscanval<distancelimit)
-    {
-      stop();
-      playErrorMelody();
-      obstacle_status = obstacle_status | B10000;
-    }
-    if(serialDebug==0)
-    {
-      Serial.print("Full left Scan distance: ");
-      Serial.println(leftscanval);
-      Serial.println("");
-      Serial.print("Obstacle status: ");
-      Serial.println(String(obstacle_status,BIN));
-      Serial.println("");
-    } 
-  }
-void lookHalfLeft()
-  {
-    head.write(halfLeft);
-    pause(servoTurnPause);
-    ldiagonalscanval = watch();
-    ldiagonalscanval = watch();
-    if(ldiagonalscanval<distancelimit)
-    {
-      stop();
-      playErrorMelody();
-      obstacle_status = obstacle_status | B1000;
-    }
-    if(serialDebug==0)
-    {
-      Serial.print("Half left Scan distance: ");
-      Serial.println(ldiagonalscanval);
-      Serial.println("");
-      Serial.print("Obstacle status: ");
-      Serial.println(String(obstacle_status,BIN));
-      Serial.println("");
-    }
-  }
-void lookFullRight()
-  {
-    head.write(fullRight);//50
-    pause(servoTurnPause);
-    rightscanval = watch();
-    rightscanval = watch();
-    if(rightscanval<distancelimit)
-    {
-      stop();
-      playErrorMelody();
-      obstacle_status  = obstacle_status | B1;
-    }
-    if(serialDebug==0)
-    {
-      Serial.print("Full right Scan distance: ");
-      Serial.println(rightscanval);
-      Serial.println("");
-      Serial.print("Obstacle status: ");
-      Serial.println(String(obstacle_status,BIN));
-      Serial.println("");
-    }
-  }
-void lookHalfRight()
-  {
-    head.write(halfRight);//70
-    pause(servoTurnPause);
-    rdiagonalscanval = watch();
-    rdiagonalscanval = watch();
-    if(rdiagonalscanval<distancelimit)
-    {
-      stop();
-      playErrorMelody();
-      obstacle_status = obstacle_status | B10;
-    }
-    if(serialDebug==0)
-    {
-      Serial.print("Half Right Scan distance: ");
-      Serial.println(rdiagonalscanval);
-      Serial.println("");
-      Serial.print("Obstacle status: ");
-      Serial.println(String(obstacle_status,BIN));
-      Serial.println("");
-    }
   }
 
 //Meassures distances to the right, left, front, left diagonal, right diagonal and asign them in cm to the variables rightscanval, 
 //leftscanval, centerscanval, ldiagonalscanval and rdiagonalscanval (there are 5 points for distance testing)
 String watchsurrounding()
   {
-    /*  obstacle_status is a binary integer, its last 5 digits stands for if there is any obstacles in 5 directions,
-    *   for example B101000 last 5 digits is 01000, which stands for Left front has obstacle, B100111 means front, right front and right ha
+    /*
+      obstacle_status is a binary integer, its last 5 digits stands for if there is any obstacles in 5 directions,
+      for example B101000 last 5 digits is 01000, which stands for Left front has obstacle, B100111 means front, right front and right ha
     */
+
     int obstacle_status =B100000;
 
     centerscanval = watch();
@@ -299,7 +171,7 @@ String watchsurrounding()
       obstacle_status  =obstacle_status | B100;
     }
 
-    head.write(120);
+    head.write(135);
     pause(100);
     ldiagonalscanval = watch();
     if(ldiagonalscanval<distancelimit)
@@ -309,7 +181,7 @@ String watchsurrounding()
       obstacle_status  =obstacle_status | B1000;
     }
     
-    head.write(170); //Didn't use 180 degrees because my servo is not able to take this angle
+    head.write(180);
     pause(100);
     leftscanval = watch();
     if(leftscanval<sidedistancelimit)
@@ -329,7 +201,7 @@ String watchsurrounding()
       obstacle_status  =obstacle_status | B100;
     }
     
-    head.write(40);
+    head.write(45);
     pause(100);
     rdiagonalscanval = watch();
     if(rdiagonalscanval<distancelimit)
@@ -349,103 +221,33 @@ String watchsurrounding()
       obstacle_status  =obstacle_status | 1;
     }
   
-    head.write(90); //Finish looking around (look forward again)
+    head.write(90); 
     pause(100);
   
     String obstacle_str= String(obstacle_status,BIN);
     obstacle_str= obstacle_str.substring(1,6);
-    return obstacle_str; //return 5-character string standing for 5 direction obstacle status
+    return obstacle_str; 
   }
 
 void collisionAvoidance()
   {
-/*    
-    ++numcycles;
-    if(numcycles>=LPT)
-      { //Watch if something is around every LPT loops while moving forward 
-        //stop(); removing this allows it to move forward while looking around
-        String obstacle_sign=watchsurrounding(); // 5 digits of obstacle_sign binary value means the 5 direction obstacle status
-        Serial.print("Obstacle Sign");
-        Serial.println(obstacle_sign);
 
-        if(obstacle_sign=="10000") //turn slight right
-          {
-            if(serialDebug==1)
-              { 
-                Serial.println("Turn slight right");
-              }
-            turnRight(15);
-          }
-        else if(obstacle_sign=="11000" ||  obstacle_sign=="01000" ) // turn right
-          {
-            if(serialDebug==1)
-              { 
-                Serial.println("Turning Right");
-              }
-            turnRight(30);
-          }   
-        if(obstacle_sign=="11100" || obstacle_sign=="10100"  || obstacle_sign=="01100") //turn hard right
-          {
-            if(serialDebug==1)
-              { 
-                Serial.println("Turn slight right");
-              }
-            turnRight(60);
-          }
-        else if(obstacle_sign=="00001") // turn slight left
-          {
-            if(serialDebug==1)
-              { 
-                Serial.println("Turn slight left");
-              }
-            turnLeft(15);
-          }
-        else if(obstacle_sign=="00010" ||  obstacle_sign=="00011"  ) // turn left
-        {
-          if(serialDebug==1)
-              { 
-                Serial.println("Turning Left");
-              }
-            turnLeft(30);
-        }
-        if(obstacle_sign=="00111" || obstacle_sign=="00101" || obstacle_sign=="00110") //turn hard left
-          {
-            if(serialDebug==1)
-              { 
-                Serial.println("Turn slight right");
-              }
-            turnRight(60);
-          }
-        else if(obstacle_sign=="01111" ||  obstacle_sign=="10111" || obstacle_sign=="11110" ||  obstacle_sign=="11101" || obstacle_sign=="11011" || obstacle_sign=="01110" || obstacle_sign=="11111" ||  obstacle_sign=="01010" || obstacle_sign=="00100") // turn around
-          {
-            if(serialDebug==1)
-                { 
-                  Serial.println("Turning Back");
-                }
-            turnRight(90);
-          }   
-        
-        else Serial.println("no handle");
-        numcycles=0; //Restart count of cycles
-      } 
-*/
-    //floorWatch();
     floorDistance=floorWatch();
-    String obstacle_sign=watchsurrounding(); // 5 digits of obstacle_sign binary value means the 5 direction obstacle status
-    Serial.print("Obstacle Sign: ");
-    Serial.println(obstacle_sign);
-    Serial.print("Floor Distance: ");
-    Serial.println(floorDistance);
-
     if(floorDistance>3) //drop detected, back up and turn around
     {
       stop();
       playErrorMelody();
       goBack();
       turnRight(90);
-      pause(turnTime);
+      return;
     }
-    else if(obstacle_sign=="10000") //turn slight right
+    
+    String obstacle_sign=watchsurrounding(); // 5 digits of obstacle_sign binary value means the 5 direction obstacle status
+    //Serial.print("Obstacle Sign: ");
+    //Serial.println(obstacle_sign);
+    //Serial.print("Floor Distance: ");
+    //Serial.println(floorDistance);
+    if(obstacle_sign=="10000") //turn slight right
       {
         if(serialDebug==1)
           { 
@@ -508,38 +310,25 @@ void collisionAvoidance()
         turnRight(90);
         pause(turnTime); 
       }   
-    
-    //else Serial.println("no handle");  
     else // no obstacle, move forward
       {
-        if(serialDebug==1)
-          { 
-            Serial.println("Going Forward");
-          }
         goForward();
+        //Serial.println("Going Forward");
       }
-/*      
-    distance = watch(); // use the watch() function to see if anything is ahead (when the robot is just moving forward and not looking around it will test the distance in front)
-    // The robot will just stop if it is completely sure there's an obstacle ahead (must test 25 times) (needed to ignore ultrasonic sensor's false signals)  
-    if (distance<distancelimit)
-      { 
-        Serial.println("Obstacle?");
-        ++thereis;
-      }
-    if (distance>distancelimit)
-      {
-        Serial.println("No obstacle");
-        thereis=0;//Count is restarted
-      } 
-    if (thereis > 25)
-      {
-        Serial.println("Obstacle confirmed");
-        stop(); // Since something is ahead, stop moving.
-        thereis=0;
-      }
-*/
+
+    floorDistance=floorWatch();
+    if(floorDistance>3) //drop detected, back up and turn around
+    {
+      stop();
+      playErrorMelody();
+      goBack();
+      turnRight(90);
+      return;
+    }
+  
   }
 
+/*
 void testDance()
   {
     lookCenter();
@@ -568,3 +357,4 @@ void testDance()
     turnLeft(45);
     lookCenter();
   }
+*/

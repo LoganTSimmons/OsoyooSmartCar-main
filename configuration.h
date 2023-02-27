@@ -10,7 +10,7 @@ int serialDebug=1; //enter 1 for on, 0 for off
 #define speedPinL 6 //  Left PWM pin connect MODEL-X ENB
 #define LeftDirectPin1 7 // Left Motor direction pin 1 to MODEL-X IN3
 #define LeftDirectPin2 8 ///Left Motor direction pin 1 to MODEL-X IN4
-#define LPT 2 // scan loop counter
+//#define LPT 2 // scan loop counter (not using that function anymore)
 #define SERVO_PIN 9 //servo connect to D9
 #define Echo_PIN 11 // Ultrasonic Echo pin connect to D11
 #define Trig_PIN 12 // Ultrasonic Trig pin connect to D12
@@ -18,7 +18,7 @@ int serialDebug=1; //enter 1 for on, 0 for off
 #define floorTrig_PIN 10 // Ultrasonic floor Trig pin connect to D13
 #define peizoPin 3 
 #define FAST_SPEED 250 // fast motor speed
-#define SPEED 90 // low motor speed, this is the lowest speed setting we can use, lower than this and the car wont start moving on its own
+#define SPEED 88 // low motor speed, this is the lowest speed setting we can use, lower than this and the car wont start moving on its own
 #define TURN_SPEED 150 //both sides of the motor speed
 #define BACK_SPEED1 255 // fast back speed
 #define BACK_SPEED2 100  // slow back speed
